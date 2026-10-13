@@ -1,4 +1,3 @@
-// src/components/CartWishlistSync.jsx
 
 import { useEffect, useRef } from "react"
 import { useDispatch, useSelector } from "react-redux"
@@ -50,10 +49,8 @@ function CartWishlistSync() {
         } catch (err) {
             console.error("Could not load saved wishlist:", err)
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user, loading])
 
-    // SAVE: whenever cart changes, save it under the current user's key
     useEffect(() => {
         if (loading) {
             return
@@ -68,7 +65,6 @@ function CartWishlistSync() {
         }
     }, [cartItems, user, loading])
 
-    // SAVE: whenever wishlist changes, save it under the current user's key
     useEffect(() => {
         if (loading) {
             return
@@ -83,7 +79,7 @@ function CartWishlistSync() {
         }
     }, [wishlistItems, user, loading])
 
-    return null // renders nothing, just runs side effects
+    return null 
 }
 
 export default CartWishlistSync
