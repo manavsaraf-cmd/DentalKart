@@ -1,18 +1,30 @@
-import { useDispatch } from "react-redux";
+import { useDispatch , useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addToCart } from "../../store/cartSlice";
-import { addToWishlist } from "../../store/wishlistSlice";
+import { addToWishlist , removeFromWishlist} from "../../store/wishlistSlice";
 
 function Productcard({ product }) {
 
     const dispatch = useDispatch();
+    const cartIn = useSelector((state)=> state.cart.items)
+    const wishlistIn = useSelector((state=>state.wishlist.items))
+
+    let cartAdded = cartIn.some((item)=> item.id===product.id)
+
+    let wislistAdded = wishlistIn.some((item)=> item.id===product.id)
 
     function handleAddToCart() {
-        dispatch(addToCart(product));
+        if(!cartAdded){
+        dispatch(addToCart(product));}
     }
 
     function handleAddToWishlist() {
-        dispatch(addToWishlist(product));
+        if(!wislistAdded)
+        {dispatch(addToWishlist(product));}
+        else{
+            dispatch(removeFromWishlist(product.id))
+        }
+        
     }
 
     return (
@@ -69,16 +81,27 @@ function Productcard({ product }) {
 
                     <button
                         onClick={handleAddToCart}
+                        disabled={cartAdded}
                         className="flex-1 rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-blue transition hover:bg-blue-700"
                     >
-                        Add To Cart
+                       { !cartAdded ? "Add To Cart" : " Added to Cart"}
                     </button>
 
                     <button
                         onClick={handleAddToWishlist}
-                        className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium text-gray-700 transition hover:border-blue-600 hover:bg-blue-100"
+                        aria-label={
+                            wislistAdded
+                                ? "Remove from wishlist"
+                                : "Add to wishlist"
+                        }
+                        aria-pressed={wislistAdded}
+                        className={`rounded-lg border px-3 py-2 text-xl transition ${
+                            wislistAdded
+                                ? "border-red-500 bg-red-50 text-red-600"
+                                : "border-gray-300 text-gray-700 hover:border-red-500 hover:bg-red-50 hover:text-red-600"
+                        }`}
                     >
-                        ♡
+                        {wislistAdded? "♥" : "♡"}
                     </button>
 
                 </div>

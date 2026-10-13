@@ -10,7 +10,7 @@ export async function getProducts({limit =10 , skip =0 , search= "", category= "
 
     }
     else if(search){
-        url = `${url}/search`
+        url= `${url}/search`
         params.q = search
     }
 
@@ -37,3 +37,14 @@ export async function getProducts({limit =10 , skip =0 , search= "", category= "
     };
 }
 
+export async function getProductById(id) {
+    const response = await apiClient.get(`/products/${id}`);
+
+    const item = response.data;
+
+    return {
+        ...item,
+        name: item.title,
+        image: item.thumbnail
+    };
+}
