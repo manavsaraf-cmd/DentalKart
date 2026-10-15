@@ -1,50 +1,52 @@
 import apiClient from "./Client";
 
-export async function getProducts({limit =10 , skip =0 , search= "", category= "" , sort="" , order=""} = {}){
+export async function getProducts({
+  limit = 10,
+  skip = 0,
+  search = "",
+  category = "",
+  sort = "",
+  order = "",
+} = {}) {
+  let url = "/products";
+  const params = { limit, skip }; //Object Literls - creating an object with values as obj with const and without const - Object Destructuring
+  if (category) {
+    url = `${url}/category/${category}`;
+  } else if (search) {
+    url = `${url}/search`;
+    params.q = search;
+  }
 
-    let url = "/products"
-    const params= { limit , skip }
-    if(category){
-        url =`${url}/category/${category}`
-       
+  if (sort) {
+    params.sortBy = sort;
+  }
 
-    }
-    else if(search){
-        url= `${url}/search`
-        params.q = search
-    }
+  if (order) {
+    params.order = order;
+  }
 
-    if (sort) {
-        params.sortBy = sort;
-    }
+  const response = await apiClient.get(url, {
+    params,
+  });
 
-    if (order) {
-        params.order = order;
-    }
-
-
-    const response = await apiClient.get(url , {
-        params
-    } )
-
-    return  {
-        ...response.data,
-        products: response.data.products.map((item) => ({
-            ...item,
-            name: item.title,
-            image: item.thumbnail
-        }))
-    };
+  return {
+    ...response.data,
+    products: response.data.products.map((item) => ({
+      ...item,
+      name: item.title,
+      image: item.thumbnail,
+    })),
+  };
 }
 
 export async function getProductById(id) {
-    const response = await apiClient.get(`/products/${id}`);
+  const response = await apiClient.get(`/products/${id}`);
 
-    const item = response.data;
+  const item = response.data;
 
-    return {
-        ...item,
-        name: item.title,
-        image: item.thumbnail
-    };
+  return {
+    ...item,
+    name: item.title,
+    image: item.thumbnail,
+  };
 }
