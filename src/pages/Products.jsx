@@ -85,7 +85,7 @@ function Products() {
     },
   });
 
-  // Infinite-scroll observer
+  
   useEffect(() => {
     const element = loadMoreRef.current;
 
@@ -115,7 +115,7 @@ function Products() {
 
   const products = data?.pages.flatMap((page) => page.products) ?? [];
 
-  // Update one URL parameter while preserving the others.
+ 
   function updateFilter(name, value) {
     setSearchParams((previousParams) => {
       const nextParams = new URLSearchParams(previousParams);
@@ -222,7 +222,7 @@ function Products() {
           </button>
         </div>
 
-        {/* Product heading */}
+       
         <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
           <h1 className="text-2xl font-bold text-gray-900">Products</h1>
 
@@ -233,19 +233,19 @@ function Products() {
           )}
         </div>
 
-        {/* Loading */}
+       
         {isPending && (
           <p className="py-10 text-center text-gray-600">Loading products...</p>
         )}
 
-        {/* Error */}
+        
         {isError && (
           <p className="py-10 text-center text-red-600">
             Error: {error.message}
           </p>
         )}
 
-        {/* Products */}
+       
         {!isPending &&
           !isError &&
           (products.length > 0 ? (
@@ -260,7 +260,7 @@ function Products() {
             </p>
           ))}
 
-        {/* Infinite scroll sentinel */}
+        
         <div ref={loadMoreRef} className="min-h-16 py-6 text-center">
           {isFetchingNextPage && (
             <p className="text-gray-600">Loading more products...</p>
